@@ -4,6 +4,21 @@ A small, intentionally imperfect task tracker. Your job is to review the codebas
 
 ---
 
+## 🚀 Submission Patch Summary
+
+### Fixed Issues & Enhancements:
+1. **SQL Operator Precedence Bug Fix**: Parenthesized search conditions in `TaskRepository.java`, `search_tasks.sql`, and `task_search_package.sql` so title matches no longer bypass status and archived filters.
+2. **Artificial Backend Latency Removed**: Removed artificial `Thread.sleep()` block in `TaskController.java` to restore sub-millisecond search performance.
+3. **Priority Filter Added**: Added `:priority` filter in SQL query and created `PriorityFilter.jsx` dropdown component.
+4. **Task Detail, Edit & Add Flow**: Implemented `POST /api/tasks`, `PATCH /api/tasks/{id}`, and `GET /api/tasks/{id}` endpoints. Created `TaskModal.jsx` for viewing/editing/adding tasks, updated `TaskTable.jsx` with read-only status badges and a "Modify" action button, and added a "+ Add Task" button.
+5. **Pagination State Fix**: Automatically reset pagination `page` state to 1 whenever filters change in `App.jsx`.
+
+### Required Assessment Documentation:
+- **`NOTES.md`**: Summary of changes, unmade tradeoffs, biggest remaining risk, and AI usage details.
+- **`handwritten/`**: Contains handwritten explanation scans (`page1_notes.png`, `page2_notes.png`) and full text transcript in `EXPLANATION.md`.
+
+---
+
 ## Why this exercise
 
 We want to see how you improve an existing codebase under a realistic timebox — not how much boilerplate you can generate. The strongest submissions are small, focused diffs paired with clear reasoning and genuine understanding.
@@ -172,12 +187,14 @@ H2 console connection: JDBC URL `jdbc:h2:mem:taskdb`, username `sa`, no password
 
 Before sharing your repo, verify:
 
-- [ ] App runs with the original setup commands (`./mvnw spring-boot:run` and `npm run dev`)
-- [ ] `NOTES.md` exists at the project root
-- [ ] `handwritten/` folder exists with photos of your handwritten explanations
-- [ ] Handwritten notes cover each bug you fixed (location, discovery, root cause, fix approach)
-- [ ] Code changes are committed and pushed
-- [ ] You have not accidentally included `node_modules/`, `target/`, or other build artifacts
+- [x] ✔ App runs with the original setup commands (`./mvnw spring-boot:run` and `npm run dev`)
+- [x] ✔ `NOTES.md` exists at the project root
+- [x] ✔ `handwritten/` folder exists with photos of your handwritten explanations
+- [x] ✔ Handwritten notes cover each bug you fixed (location, discovery, root cause, fix approach)
+- [x] ✔ Code changes are committed and pushed
+- [x] ✔ You have not accidentally included `node_modules/`, `target/`, or other build artifacts
+
+
 
 ---
 
