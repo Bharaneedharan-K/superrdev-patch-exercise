@@ -20,6 +20,7 @@ CREATE OR REPLACE PACKAGE task_search_pkg AS
     PROCEDURE search_tasks(
         p_search_term IN  VARCHAR2 DEFAULT NULL,
         p_status      IN  VARCHAR2 DEFAULT NULL,
+        p_priority    IN  VARCHAR2 DEFAULT NULL,
         p_page        IN  NUMBER   DEFAULT 1,
         p_page_size   IN  NUMBER   DEFAULT 10,
         p_results     OUT task_cursor,
@@ -34,6 +35,7 @@ CREATE OR REPLACE PACKAGE BODY task_search_pkg AS
     PROCEDURE search_tasks(
         p_search_term IN  VARCHAR2 DEFAULT NULL,
         p_status      IN  VARCHAR2 DEFAULT NULL,
+        p_priority    IN  VARCHAR2 DEFAULT NULL,
         p_page        IN  NUMBER   DEFAULT 1,
         p_page_size   IN  NUMBER   DEFAULT 10,
         p_results     OUT task_cursor,
@@ -50,9 +52,9 @@ CREATE OR REPLACE PACKAGE BODY task_search_pkg AS
           INTO p_total_count
           FROM tasks
          WHERE archived = 0
-           AND LOWER(title) LIKE v_term
-            OR LOWER(description) LIKE v_term
-           AND (p_status IS NULL OR status = p_status);
+           AND (LOWER(title) LIKE v_term OR LOWER(description) LIKE v_term)
+           AND (p_status IS NULL OR status = p_status)
+           AND (p_priority IS NULL OR priority = p_priority);
 
         -- Paginated results using ROWNUM (pre-12c pattern)
         OPEN p_results FOR
@@ -64,9 +66,9 @@ CREATE OR REPLACE PACKAGE BODY task_search_pkg AS
                                assignee, created_at
                           FROM tasks
                          WHERE archived = 0
-                           AND LOWER(title) LIKE v_term
-                            OR LOWER(description) LIKE v_term
+                           AND (LOWER(title) LIKE v_term OR LOWER(description) LIKE v_term)
                            AND (p_status IS NULL OR status = p_status)
+                           AND (p_priority IS NULL OR priority = p_priority)
                          ORDER BY created_at DESC
                     ) t
                    WHERE ROWNUM <= v_offset + p_page_size
@@ -77,3 +79,4 @@ CREATE OR REPLACE PACKAGE BODY task_search_pkg AS
 
 END task_search_pkg;
 /
+
